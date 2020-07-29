@@ -1,19 +1,24 @@
 import React from "react";
 import CalendarView from "./components/CalendarView";
+import data from "./data/2020.json";
+
+interface holydayEntry {
+  id: Date;
+  rel: string;
+  names: string;
+  off: string;
+  sec: string;
+  fast: number;
+  moon: number;
+  link: string;
+}
+
+let calendarData: holydayEntry[];
 
 function App() {
-  const calendars = ["./data/2015.json", "./data/2020.json"];
-  let data: string;
-
-  calendars.map((year) => (data = require(year)));
-
   return (
     <div className="App">
-      {calendars.map((year, index) => (
-        <div key={index}>
-          <CalendarView year={year} />
-        </div>
-      ))}
+      <CalendarView />
     </div>
   );
 }
