@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import data from "../data/2020.json";
+import { calendarData, holydayEntry } from "../interfaces";
 
-const CalendarView = () => {
+const CalendarView = (props: calendarData) => {
   const Container = styled.div`
     display: flex;
     flex-flow: row wrap;
@@ -46,7 +46,7 @@ const CalendarView = () => {
     border-radius: 10px;
   `;
 
-  function createDate(id: number) {
+  function createDate(id: Date) {
     const dateString = id
       .toString()
       .replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-$3");
@@ -56,8 +56,8 @@ const CalendarView = () => {
 
   return (
     <div>
-      {data.map((entry) => (
-        <Container key={entry.id}>
+      {Array.from(props.data).map((entry: holydayEntry) => (
+        <Container key={Number(entry.id)}>
           <Side>
             <div>
               <a href={entry.link}>
