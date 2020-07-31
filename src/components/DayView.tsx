@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-export interface DayViewEntry {
-  id: number;
+export interface DayInterface {
+  id: Date;
   rel: string;
   names: string;
   off: string;
@@ -12,7 +12,7 @@ export interface DayViewEntry {
   link: string;
 }
 
-const DayView = (props: DayViewEntry) => {
+const DayView = (props: DayInterface) => {
   const Container = styled.div`
     display: flex;
     flex-flow: row wrap;
@@ -20,6 +20,7 @@ const DayView = (props: DayViewEntry) => {
     padding: 0.5em;
     border: ${props.off ? "1px solid blue" : "1px solid gray"};
     border-radius: 10px;
+    justify-content: space-between;
   `;
 
   const Side = styled.div`
@@ -58,17 +59,9 @@ const DayView = (props: DayViewEntry) => {
     border-radius: 10px;
   `;
 
-  function createDate(id: number) {
-    const dateString = id
-      .toString()
-      .replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-$3");
-    const date = new Date(dateString);
-    return date;
-  }
-
   return (
     <div>
-      <Container>
+      {/* <Container>
         <Side>
           <div>
             <a href={props.link}>
@@ -102,7 +95,7 @@ const DayView = (props: DayViewEntry) => {
             ""
           )}
         </Main>
-      </Container>
+      </Container> */}
     </div>
   );
 };
