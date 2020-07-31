@@ -1,52 +1,20 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { calendarData, holydayEntry } from "../interfaces";
+import DayView, { DayViewEntry } from "./DayView";
 
-const CalendarView = (props: calendarData) => {
+export interface CalendarViewEntry {
+  data: DayViewEntry[];
+}
+
+const CalendarView = (props: CalendarViewEntry) => {
   const Container = styled.div`
     display: flex;
     flex-flow: row wrap;
-    margin: 1em;
-  `;
-  /* border: ${props.official ? "1px solid blue" : "1px solid gray"} */
-
-  const Side = styled.div`
-    display: flex;
-    flex-flow: column;
-    max-width: 20%;
-    margin-right: 1em;
   `;
 
-  const Icons = styled.div`
-    display: flex;
-    flex-flow: row;
-    align-content: space-between;
-  `;
+  let MonthView: DayViewEntry[];
 
-  const Main = styled.div`
-    display: flex;
-    flex-flow: column;
-    max-width: 80%;
-  `;
-
-  const Religious = styled.div`
-    display: flex;
-    flex-flow: column;
-    margin-bottom: 1em;
-    padding: 0.5em;
-    border: 1px solid purple;
-    border-radius: 10px;
-  `;
-
-  const Secular = styled.div`
-    display: flex;
-    flex-flow: column;
-    padding: 0.5em;
-    border: 1px solid blue;
-    border-radius: 10px;
-  `;
-
-  function createDate(id: Date) {
+  function createDate(id: number) {
     const dateString = id
       .toString()
       .replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-$3");
@@ -55,47 +23,14 @@ const CalendarView = (props: calendarData) => {
   }
 
   return (
-    <div>
-      {Array.from(props.data).map((entry: holydayEntry) => (
-        <Container key={Number(entry.id)}>
-          <Side>
-            <div>
-              <a href={entry.link}>
-                {Number.isNaN(createDate(entry.id).getDate())
-                  ? entry.rel
-                  : createDate(entry.id).getDate()}
-              </a>
-            </div>
-            <Icons>
-              <div>{entry.moon}</div>
-              <div>{entry.fast}</div>
-            </Icons>
-          </Side>
-          <Main>
-            {entry.names ? (
-              <Religious>
-                <div>
-                  {!Number.isNaN(createDate(entry.id).getDate())
-                    ? entry.rel
-                    : ""}
-                </div>
-                <div>{entry.names}</div>
-              </Religious>
-            ) : (
-              ""
-            )}
-            {entry.off || entry.sec ? (
-              <Secular>
-                <div>{entry.off}</div>
-                <div>{entry.sec}</div>
-              </Secular>
-            ) : (
-              ""
-            )}
-          </Main>
-        </Container>
+    <Container>
+      {props.data.map((entry) => (
+        <div key={entry.id}>
+          {console.log(entry.id)}
+          <DayView {...entry} />
+        </div>
       ))}
-    </div>
+    </Container>
   );
 };
 

@@ -1,30 +1,15 @@
 import React from "react";
 import CalendarView from "./components/CalendarView";
-import { holydayEntry } from "./interfaces";
-import data from "./data/2020.json";
+import jsonObject from "./data/2020.json";
+import { DayViewEntry } from "./components/DayView";
 
-// const data: any[] = JSON.parse("./data/2020.json");
-
-let holyData: holydayEntry[];
-
-function populateData(rawData: JSON) {
-  rawData = rawData.parse(rawData);
-  if (holyData === undefined) {
-    console.log("undefined data");
-  } else {
-    rawData.map((entry, index) => (holyData[index] = entry));
-  }
-}
+const calendarContent: DayViewEntry[] = [];
+jsonObject.forEach((entry) => calendarContent.push(entry));
 
 function App() {
-  console.log(typeof data);
-  console.log(holyData);
-  populateData(data);
-  console.log(holyData);
-
   return (
     <div className="App">
-      <CalendarView data={holyData} />
+      <CalendarView data={calendarContent} />
     </div>
   );
 }
