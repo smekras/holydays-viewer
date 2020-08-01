@@ -1,48 +1,75 @@
-import React, { useEffect } from "react";
-// import CalendarView from "./components/CalendarView";
-import DayView, { DayInterface } from "./components/DayView";
+import React from "react";
+import { MonthInterface } from "./components/MonthView";
+import { DayInterface } from "./components/DayView";
 import jsonObject from "./data/2020.json";
-
-const calendarContent: DayInterface[] = [];
 
 function App() {
   function createDate(id: number) {
-    const dateString = id.toString();
-    if (dateString.substring(7, 8) === "00") {
-      dateString.replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-01T00:00:00.000Z");
-    } else {
-      dateString.replace(/(\d{4})(\d{2})(\d{2})/g, "$1-$2-$3");
-    }
+    let dateString = id.toString();
+
+    dateString =
+      dateString.substring(0, 4) +
+      "-" +
+      dateString.substring(4, 6) +
+      "-" +
+      dateString.substring(6);
+
     const date = new Date(dateString);
+
     return date;
   }
 
-  useEffect(() => {
-    let holydate: DayInterface;
+  function findMonthDays(month: number) {
+    const monthContent: DayInterface[] = [];
 
-    jsonObject.forEach((entry) => {
-      holydate.id = createDate(entry.id);
-      holydate.rel = entry.rel;
-      holydate.names = entry.names;
-      holydate.off = entry.off;
-      holydate.sec = entry.sec;
-      holydate.fast = entry.fast;
-      holydate.moon = entry.moon;
-      holydate.link = entry.link;
-      calendarContent.push(holydate);
+    jsonObject.map((entry) => {
+      if (
+        Number(entry.id.toString().substring(4, 6)) === month &&
+        Number(entry.id.toString().substring(6)) !== 0
+      ) {
+        monthContent.push({
+          id: createDate(entry.id),
+          rel: entry.rel,
+          names: entry.names,
+          off: entry.off,
+          sec: entry.sec,
+          fast: entry.fast,
+          moon: entry.moon,
+          link: entry.link,
+        });
+      }
     });
-  }, []);
+    return monthContent;
+  }
+
+  function reformatData() {
+    const calendarContent: MonthInterface[] = [];
+
+    jsonObject.map((entry) => {
+      const dateString = entry.id.toString();
+      let monthEntry: MonthInterface = { month: 0, name: "", days: [] };
+
+      if (dateString.substring(6) === "00") {
+        monthEntry.month = Number(dateString.substring(4, 6));
+        monthEntry.name = entry.rel;
+        monthEntry.days = findMonthDays(monthEntry.month);
+        calendarContent.push(monthEntry);
+      }
+    });
+  }
+
+  // TODO: Fix Peformance issues
+  reformatData();
 
   return (
     <div className="App">
-      {console.log("calendar content:" + calendarContent[0])}
       {console.count("app")}
-      {calendarContent.map((entry) => (
+      {/* {calendarContent.map((entry) => (
         <div key={String(entry.id)}>
           {entry.id}
           {console.log("entry")}
         </div>
-      ))}
+      ))} */}
       {/* <CalendarView data={calendarContent} /> */}
     </div>
   );
