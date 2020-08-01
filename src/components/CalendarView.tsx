@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { DayInterface } from "./DayView";
 import MonthView, { MonthInterface } from "./MonthView";
 
 export interface CalendarInterface {
-  data: DayInterface[];
+  data: MonthInterface[];
 }
 
 const CalendarView = (props: CalendarInterface) => {
@@ -15,12 +14,16 @@ const CalendarView = (props: CalendarInterface) => {
 
   return (
     <Container>
-      {/* {props.data.map((entry, index) => (
-        <div key={entry.id}>
-          {console.log(entry.id)}
-          <DayView {...entry} />
-        </div>
-      ))} */}
+      {props.data.map((entry) => {
+        return (
+          <MonthView
+            key={entry.month}
+            month={entry.month}
+            name={entry.name}
+            days={entry.days}
+          />
+        );
+      })}
     </Container>
   );
 };

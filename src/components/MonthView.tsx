@@ -8,15 +8,15 @@ export interface MonthInterface {
   days: DayInterface[];
 }
 
-// function countOccurence(days: DayInterface[], trait: string) {
-//   let count = 0;
-//   days.forEach((entry) => {
-//     if (entry[trait as keyof DayInterface]) {
-//       count++;
-//     }
-//   });
-//   return count;
-// }
+function countOccurence(days: DayInterface[], trait: string) {
+  let count = 0;
+  days.forEach((entry) => {
+    if (entry[trait as keyof DayInterface]) {
+      count++;
+    }
+  });
+  return count;
+}
 
 const MonthView = (props: MonthInterface) => {
   const Container = styled.div`
@@ -38,16 +38,16 @@ const MonthView = (props: MonthInterface) => {
     flex-flow: row wrap;
   `;
 
-  // const official = countOccurence(props.days, "off");
-  // const secular = countOccurence(props.days, "sec");
+  const official = countOccurence(props.days, "off");
+  const secular = countOccurence(props.days, "sec");
 
   return (
     <Container>
       <Banner>
-        {/* <div>{props.month}</div>
+        <div>{props.month}</div>
         <div>{props.name}</div>
         <div>{official}</div>
-        <div>{secular}</div> */}
+        <div>{secular}</div>
       </Banner>
       <Content></Content>
     </Container>

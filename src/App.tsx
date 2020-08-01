@@ -1,4 +1,5 @@
 import React from "react";
+import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
 import { DayInterface } from "./components/DayView";
 import jsonObject from "./data/2020.json";
@@ -42,10 +43,10 @@ function App() {
     return monthContent;
   }
 
-  function reformatData() {
+  function reformatData(source: any[]) {
     const calendarContent: MonthInterface[] = [];
 
-    jsonObject.map((entry) => {
+    source.map((entry) => {
       const dateString = entry.id.toString();
       let monthEntry: MonthInterface = { month: 0, name: "", days: [] };
 
@@ -56,21 +57,15 @@ function App() {
         calendarContent.push(monthEntry);
       }
     });
+    return calendarContent;
   }
 
   // TODO: Fix Peformance issues
-  reformatData();
 
   return (
     <div className="App">
       {console.count("app")}
-      {/* {calendarContent.map((entry) => (
-        <div key={String(entry.id)}>
-          {entry.id}
-          {console.log("entry")}
-        </div>
-      ))} */}
-      {/* <CalendarView data={calendarContent} /> */}
+      <CalendarView data={reformatData(jsonObject)} />
     </div>
   );
 }
