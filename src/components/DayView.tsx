@@ -61,14 +61,10 @@ const DayView = (props: DayInterface) => {
 
   return (
     <div>
-      {/* <Container>
+      <Container>
         <Side>
           <div>
-            <a href={props.link}>
-              {Number.isNaN(createDate(props.id).getDate())
-                ? props.rel
-                : createDate(props.id).getDate()}
-            </a>
+            <a href={props.link}>{props.id.getDate()}</a>
           </div>
           <Icons>
             <div>{props.moon}</div>
@@ -78,9 +74,7 @@ const DayView = (props: DayInterface) => {
         <Main>
           {props.names ? (
             <Religious>
-              <div>
-                {!Number.isNaN(createDate(props.id).getDate()) ? props.rel : ""}
-              </div>
+              <div>{props.rel}</div>
               <div>{props.names}</div>
             </Religious>
           ) : (
@@ -95,7 +89,7 @@ const DayView = (props: DayInterface) => {
             ""
           )}
         </Main>
-      </Container> */}
+      </Container>
     </div>
   );
 };

@@ -29,6 +29,7 @@ const MonthView = (props: MonthInterface) => {
     border-radius: 10px;
     padding: 1em;
     margin: 0.5em;
+    width: 230px;
   `;
 
   const Banner = styled.div`
@@ -36,7 +37,6 @@ const MonthView = (props: MonthInterface) => {
     flex-flow: row;
     border-bottom: 1px solid gray;
     justify-content: space-between;
-    min-width: 200px;
   `;
 
   const TitleBox = styled.div`
@@ -44,48 +44,80 @@ const MonthView = (props: MonthInterface) => {
     flex-flow: row nowrap;
   `;
 
-  const OffBox = styled.div`
+  const NumberPlate = styled.div`
+    color: ${official > 0 ? "blue" : "orange"};
     padding: 0.5em;
-    border: 1px solid blue;
-    border-radius: 15px;
-    margin-bottom: 0.5em;
-    margin-left: 0.5em;
-    background: blue;
-    color: white;
-    width: 18px;
-    text-align: center;
+    min-width: 18px;
+    font-weight: bolder;
   `;
 
-  const SecBox = styled.div`
+  const MonthLabel = styled.div`
     padding: 0.5em;
-    border: 1px solid orange;
+    font-weight: bold;
+    vertical-align: middle;
+  `;
+
+  interface BoxProps {
+    type: string;
+  }
+
+  const Box = styled.div<BoxProps>`
+    padding: 0.5em;
+    border: 1px solid
+      ${(bprops: BoxProps) => (bprops.type === "off" ? "blue" : "orange")};
     border-radius: 15px;
     margin-bottom: 0.5em;
     margin-left: 0.5em;
-    background: orange;
     color: white;
-    width: 18px;
+    min-width: 18px;
     text-align: center;
+    background: ${(bprops: BoxProps) =>
+      bprops.type === "off" ? "blue" : "orange"};
   `;
 
   const Content = styled.div`
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-between;
+    :after {
+      content: "";
+      flex: auto;
+    }
+  `;
+
+  const DayBox = styled.div<BoxProps>`
+    padding: 0.5em;
+    text-align: center;
+    width: 15px;
+    color: ${(bprops: BoxProps) =>
+      bprops.type === "off"
+        ? "blue"
+        : bprops.type === "sec"
+        ? "orange"
+        : "black"};
   `;
 
   return (
     <Container>
       <Banner>
         <TitleBox>
-          <div>{props.month}</div>
-          <div>{props.name}</div>
+          <NumberPlate>{props.month}</NumberPlate>
+          <MonthLabel>{props.name}</MonthLabel>
         </TitleBox>
         <TitleBox>
-          {official > 0 ? <OffBox>{official}</OffBox> : ""}
-          {secular > 0 ? <SecBox>{secular}</SecBox> : ""}
+          {official > 0 ? <Box type="off">{official}</Box> : ""}
+          {secular > 0 ? <Box type="sec">{secular}</Box> : ""}
         </TitleBox>
       </Banner>
-      <Content></Content>
+      <Content>
+        {props.days.map((entry) => {
+          return (
+            <DayBox type={entry.off ? "off" : entry.sec ? "sec" : ""}>
+              {entry.id.getDate()}
+            </DayBox>
+          );
+        })}
+      </Content>
     </Container>
   );
 };

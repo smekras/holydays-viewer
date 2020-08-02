@@ -1,4 +1,7 @@
 import React from "react";
+import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
 import { DayInterface } from "./components/DayView";
@@ -60,13 +63,55 @@ function App() {
     return calendarContent;
   }
 
+  const AppContainer = styled.div`
+    display: flex;
+    flex-flow: row;
+    justify-content: left;
+  `;
+
+  const MainPanel = styled.div`
+    min-width: min-content;
+    max-width: 850px;
+  `;
+
+  const SidePanel = styled.div`
+    flex: auto;
+    display: flex;
+    flex-flow: column;
+    width: min-content;
+  `;
+
+  const FormField = styled.form`
+    display: flex;
+    flex-flow: row;
+    padding: 0.5em;
+    border-bottom: 1px solid black;
+    margin-bottom: 0.5em;
+  `;
+
+  const IconBox = styled.div`
+    padding: 0.5em;
+  `;
+
   // TODO: Fix Peformance issues
 
   return (
-    <div className="App">
+    <AppContainer>
       {console.count("app")}
-      <CalendarView data={reformatData(jsonObject)} />
-    </div>
+      <MainPanel>
+        <CalendarView data={reformatData(jsonObject)} />
+      </MainPanel>
+      <SidePanel>
+        <FormField>
+          <IconBox>
+            <FontAwesomeIcon icon={faSearch} />
+          </IconBox>
+          <input type="text" value="search..." />
+        </FormField>
+        <div>Search Results:</div>
+        <div></div>
+      </SidePanel>
+    </AppContainer>
   );
 }
 
