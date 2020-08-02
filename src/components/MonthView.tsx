@@ -19,18 +19,53 @@ function countOccurence(days: DayInterface[], trait: string) {
 }
 
 const MonthView = (props: MonthInterface) => {
+  const official = countOccurence(props.days, "off");
+  const secular = countOccurence(props.days, "sec");
+
   const Container = styled.div`
     display: flex;
     flex-flow: column;
     border: 1px solid gray;
     border-radius: 10px;
     padding: 1em;
+    margin: 0.5em;
   `;
 
   const Banner = styled.div`
     display: flex;
     flex-flow: row;
     border-bottom: 1px solid gray;
+    justify-content: space-between;
+    min-width: 200px;
+  `;
+
+  const TitleBox = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
+  `;
+
+  const OffBox = styled.div`
+    padding: 0.5em;
+    border: 1px solid blue;
+    border-radius: 15px;
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+    background: blue;
+    color: white;
+    width: 18px;
+    text-align: center;
+  `;
+
+  const SecBox = styled.div`
+    padding: 0.5em;
+    border: 1px solid orange;
+    border-radius: 15px;
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+    background: orange;
+    color: white;
+    width: 18px;
+    text-align: center;
   `;
 
   const Content = styled.div`
@@ -38,16 +73,17 @@ const MonthView = (props: MonthInterface) => {
     flex-flow: row wrap;
   `;
 
-  const official = countOccurence(props.days, "off");
-  const secular = countOccurence(props.days, "sec");
-
   return (
     <Container>
       <Banner>
-        <div>{props.month}</div>
-        <div>{props.name}</div>
-        <div>{official}</div>
-        <div>{secular}</div>
+        <TitleBox>
+          <div>{props.month}</div>
+          <div>{props.name}</div>
+        </TitleBox>
+        <TitleBox>
+          {official > 0 ? <OffBox>{official}</OffBox> : ""}
+          {secular > 0 ? <SecBox>{secular}</SecBox> : ""}
+        </TitleBox>
       </Banner>
       <Content></Content>
     </Container>
