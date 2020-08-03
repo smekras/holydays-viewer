@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
-import { DayInterface } from "./components/DayView";
+import DayView, { DayInterface } from "./components/DayView";
 import jsonObject from "./data/2020.json";
 
 function App() {
@@ -51,11 +51,17 @@ function App() {
 
     source.map((entry) => {
       const dateString = entry.id.toString();
-      let monthEntry: MonthInterface = { month: 0, name: "", days: [] };
+      let monthEntry: MonthInterface = {
+        month: 0,
+        name: "",
+        link: "",
+        days: [],
+      };
 
       if (dateString.substring(6) === "00") {
         monthEntry.month = Number(dateString.substring(4, 6));
         monthEntry.name = entry.rel;
+        monthEntry.link = entry.link;
         monthEntry.days = findMonthDays(monthEntry.month);
         calendarContent.push(monthEntry);
       }
@@ -71,7 +77,16 @@ function App() {
 
   const MainPanel = styled.div`
     min-width: min-content;
-    max-width: 850px;
+    ${() => {
+      const breakpoints = [768, 1024];
+      const rules: string[] = [];
+      breakpoints.map((entry) =>
+        rules.push(
+          `@media screen and (max-width: ${entry}px) {width: ${entry - 550}px}`
+        )
+      );
+      return rules.join(" ");
+    }}
   `;
 
   const SidePanel = styled.div`
@@ -93,6 +108,13 @@ function App() {
     padding: 0.5em;
   `;
 
+  const results: DayInterface[] = [
+    reformatData(jsonObject)[0].days[0],
+    reformatData(jsonObject)[0].days[1],
+    reformatData(jsonObject)[0].days[2],
+    reformatData(jsonObject)[0].days[3],
+  ];
+
   // TODO: Fix Peformance issues
 
   return (
@@ -106,10 +128,22 @@ function App() {
           <IconBox>
             <FontAwesomeIcon icon={faSearch} />
           </IconBox>
-          <input type="text" value="search..." />
+          <input type="text" defaultValue="search..." />
         </FormField>
         <div>Search Results:</div>
-        <div></div>
+        {results.map((entry) => (
+          <DayView
+            key={entry.id.getDate()}
+            id={entry.id}
+            rel={entry.rel}
+            names={entry.names}
+            off={entry.off}
+            sec={entry.sec}
+            fast={entry.fast}
+            moon={entry.moon}
+            link={entry.link}
+          />
+        ))}
       </SidePanel>
     </AppContainer>
   );

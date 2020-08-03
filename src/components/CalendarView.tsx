@@ -20,6 +20,7 @@ const CalendarView = (props: CalendarInterface) => {
             key={entry.month}
             month={entry.month}
             name={entry.name}
+            link={entry.link}
             days={entry.days}
           />
         );

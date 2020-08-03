@@ -5,6 +5,7 @@ import { DayInterface } from "./DayView";
 export interface MonthInterface {
   month: number;
   name: string;
+  link: string;
   days: DayInterface[];
 }
 
@@ -45,7 +46,7 @@ const MonthView = (props: MonthInterface) => {
   `;
 
   const NumberPlate = styled.div`
-    color: ${official > 0 ? "blue" : "orange"};
+    color: ${official > 0 ? "royalblue" : "brown"};
     padding: 0.5em;
     min-width: 18px;
     font-weight: bolder;
@@ -58,21 +59,22 @@ const MonthView = (props: MonthInterface) => {
   `;
 
   interface BoxProps {
-    type: string;
+    purpose: string;
   }
 
-  const Box = styled.div<BoxProps>`
+  const Box = styled.button<BoxProps>`
     padding: 0.5em;
     border: 1px solid
-      ${(bprops: BoxProps) => (bprops.type === "off" ? "blue" : "orange")};
-    border-radius: 15px;
+      ${(bprops: BoxProps) =>
+        bprops.purpose === "off" ? "royalblue" : "brown"};
+    border-radius: 12px;
     margin-bottom: 0.5em;
     margin-left: 0.5em;
     color: white;
-    min-width: 18px;
+    min-width: 36px;
     text-align: center;
     background: ${(bprops: BoxProps) =>
-      bprops.type === "off" ? "blue" : "orange"};
+      bprops.purpose === "off" ? "royalblue" : "brown"};
   `;
 
   const Content = styled.div`
@@ -90,10 +92,10 @@ const MonthView = (props: MonthInterface) => {
     text-align: center;
     width: 15px;
     color: ${(bprops: BoxProps) =>
-      bprops.type === "off"
-        ? "blue"
-        : bprops.type === "sec"
-        ? "orange"
+      bprops.purpose === "off"
+        ? "royalblue"
+        : bprops.purpose === "sec"
+        ? "brown"
         : "black"};
   `;
 
@@ -102,17 +104,28 @@ const MonthView = (props: MonthInterface) => {
       <Banner>
         <TitleBox>
           <NumberPlate>{props.month}</NumberPlate>
-          <MonthLabel>{props.name}</MonthLabel>
+          <MonthLabel>
+            <a href={props.link}>{props.name}</a>
+          </MonthLabel>
         </TitleBox>
         <TitleBox>
-          {official > 0 ? <Box type="off">{official}</Box> : ""}
-          {secular > 0 ? <Box type="sec">{secular}</Box> : ""}
+          {official > 0 ? (
+            <Box purpose="off" onClick={(e) => console.log("Clicked")}>
+              {official}
+            </Box>
+          ) : (
+            ""
+          )}
+          {secular > 0 ? <Box purpose="sec">{secular}</Box> : ""}
         </TitleBox>
       </Banner>
       <Content>
         {props.days.map((entry) => {
           return (
-            <DayBox type={entry.off ? "off" : entry.sec ? "sec" : ""}>
+            <DayBox
+              key={entry.id.getDate()}
+              purpose={entry.off ? "off" : entry.sec ? "sec" : ""}
+            >
               {entry.id.getDate()}
             </DayBox>
           );
