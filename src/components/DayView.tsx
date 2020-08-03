@@ -34,12 +34,14 @@ const DayView = (props: DayInterface) => {
     display: flex;
     flex-flow: row;
     justify-content: space-between;
-    min-width: 700px;
     margin: 1em;
     padding: 0.5em;
     padding-bottom: 0;
     border: 1px solid ${props.off ? "royalblue" : "gray"};
     border-radius: 10px;
+    @media (min-width: 1200px) {
+      width: 650px;
+    }
   `;
 
   const Side = styled.div`

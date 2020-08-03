@@ -116,7 +116,13 @@ const MonthView = (props: MonthInterface) => {
           ) : (
             ""
           )}
-          {secular > 0 ? <Box purpose="sec">{secular}</Box> : ""}
+          {secular > 0 ? (
+            <Box purpose="sec" onClick={(e) => console.log("Clicked")}>
+              {secular}
+            </Box>
+          ) : (
+            ""
+          )}
         </TitleBox>
       </Banner>
       <Content>

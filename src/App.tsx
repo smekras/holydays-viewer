@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
 import DayView, { DayInterface } from "./components/DayView";
 import jsonObject from "./data/2020.json";
 
 function App() {
+  const [results, setResults] = useState([
+    {
+      id: createDate(20200101),
+      rel: "",
+      names: "",
+      off: "",
+      sec: "",
+      fast: 0,
+      moon: 0,
+      link: "",
+    },
+  ]);
+
+  setResults([]);
   function createDate(id: number) {
     let dateString = id.toString();
 
@@ -72,6 +86,9 @@ function App() {
   const AppContainer = styled.div`
     display: flex;
     flex-flow: row;
+    @media (max-width: 570px) {
+      flex-flow: column;
+    }
     justify-content: left;
   `;
 
@@ -89,6 +106,18 @@ function App() {
     }}
   `;
 
+  const FormField = styled.form`
+    display: flex;
+    flex-flow: row;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid gray;
+  `;
+
+  const IconBox = styled.div`
+    padding: 0.5em;
+  `;
+
   const SidePanel = styled.div`
     flex: auto;
     display: flex;
@@ -96,41 +125,48 @@ function App() {
     width: min-content;
   `;
 
-  const FormField = styled.form`
+  const Banner = styled.div`
     display: flex;
     flex-flow: row;
     padding: 0.5em;
-    border-bottom: 1px solid black;
-    margin-bottom: 0.5em;
+    border-bottom: 1px solid gray;
   `;
 
-  const IconBox = styled.div`
+  const ResultsLabel = styled.label`
+    display: flex;
     padding: 0.5em;
   `;
 
-  const results: DayInterface[] = [
-    reformatData(jsonObject)[0].days[0],
-    reformatData(jsonObject)[0].days[1],
-    reformatData(jsonObject)[0].days[2],
-    reformatData(jsonObject)[0].days[3],
-  ];
+  // const results: DayInterface[] = [
+  //   reformatData(jsonObject)[0].days[0],
+  //   reformatData(jsonObject)[0].days[1],
+  //   reformatData(jsonObject)[0].days[2],
+  //   reformatData(jsonObject)[0].days[3],
+  // ];
 
   // TODO: Fix Peformance issues
+
+  useEffect(() => {}, [results]);
 
   return (
     <AppContainer>
       {console.count("app")}
       <MainPanel>
-        <CalendarView data={reformatData(jsonObject)} />
-      </MainPanel>
-      <SidePanel>
         <FormField>
           <IconBox>
             <FontAwesomeIcon icon={faSearch} />
           </IconBox>
           <input type="text" defaultValue="search..." />
         </FormField>
-        <div>Search Results:</div>
+        <CalendarView data={reformatData(jsonObject)} />
+      </MainPanel>
+      <SidePanel>
+        <Banner>
+          <IconBox>
+            <FontAwesomeIcon icon={faCalendarDay} />
+          </IconBox>
+          <ResultsLabel>Search Results:</ResultsLabel>
+        </Banner>
         {results.map((entry) => (
           <DayView
             key={entry.id.getDate()}
