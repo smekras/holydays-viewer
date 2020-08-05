@@ -9,8 +9,8 @@ export interface DayInterface {
   names: string;
   off: string;
   sec: string;
-  fast: string | number;
-  moon: string | number;
+  fast: number;
+  moon: number;
   link: string;
 }
 
