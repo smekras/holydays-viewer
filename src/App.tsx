@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
-import DayView, { DayInterface } from "./components/DayView";
+import { DayInterface } from "./components/DayView";
+import SideView from "./components/SideView";
 import jsonObject from "./data/2020.json";
+import SearchForm from "./components/SearchForm";
 
 function createDate(id: number | string) {
   let dateString = typeof id === "number" ? id.toString() : id;
@@ -68,38 +68,6 @@ function reformatData(source: any[]) {
   return calendarContent;
 }
 
-function populateResults(query: Date[]) {
-  const results: DayInterface[] = [];
-
-  return results;
-}
-
-function renderResults(results: DayInterface[]) {
-  console.count("results");
-
-  if (results.length > 0) {
-    return results.map((entry: DayInterface) => (
-      <DayView
-        key={entry.id.getDate()}
-        id={entry.id}
-        rel={entry.rel}
-        names={entry.names}
-        off={entry.off}
-        sec={entry.sec}
-        fast={entry.fast}
-        moon={entry.moon}
-        link={entry.link}
-      />
-    ));
-  }
-  return (
-    <div>
-      <br />
-      No query or matching entries
-    </div>
-  );
-}
-
 const AppContainer = styled.div`
   display: flex;
   flex-flow: row;
@@ -123,93 +91,18 @@ const MainPanel = styled.div`
   }}
 `;
 
-const IconBox = styled.div`
-  padding: 0.5em;
-`;
-
-const FormField = styled.form`
-  display: flex;
-  flex-flow: row;
-  padding: 0.5em;
-  margin-bottom: 0.5em;
-  border-bottom: 1px solid gray;
-`;
-
-const SidePanel = styled.div`
-  flex: auto;
-  display: flex;
-  flex-flow: column;
-  @media (min-width: 1200px) {
-    width: 650px;
-  }
-`;
-
-const Banner = styled.div`
-  display: flex;
-  flex-flow: row;
-  padding: 0.5em;
-  border-bottom: 1px solid gray;
-`;
-
-const ResultsLabel = styled.label`
-  display: flex;
-  padding: 0.5em;
-`;
-
 function App() {
   const data = reformatData(jsonObject);
-  const [search, setSearch] = useState("");
-  const [query, setQuery] = useState([] as Date[]);
-  const [results, setResults] = useState(populateResults(query));
-
-  useEffect(() => {
-    console.count("effect");
-    console.log("query in useEffect:", query);
-    setResults(populateResults(query));
-  }, [query]);
-
-  const handleSubmit = (event: any) => {
-    if (search) {
-      console.count("submit");
-      data.map((entry) => {
-        entry.month === createDate(search).getMonth() + 1
-          ? entry.days.map((day) => {
-              day.id.getTime() === createDate(search).getTime()
-                ? query.push(day.id)
-                : setQuery([]);
-            })
-          : setQuery([]);
-      });
-    }
-    console.log("query:", query);
-    event.preventDefault();
-  };
+  let results: DayInterface[] = [];
 
   return (
     <AppContainer>
       {console.count("app")}
       <MainPanel>
-        <FormField onSubmit={(e) => handleSubmit(e)}>
-          <IconBox>
-            <FontAwesomeIcon icon={faSearch} />
-          </IconBox>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </FormField>
+        <SearchForm data={data} results={results} />
         <CalendarView data={data} />
       </MainPanel>
-      <SidePanel>
-        <Banner>
-          <IconBox>
-            <FontAwesomeIcon icon={faCalendarDay} />
-          </IconBox>
-          <ResultsLabel>Search Results</ResultsLabel>
-        </Banner>
-        {renderResults(results)}
-      </SidePanel>
+      <SideView results={results} />
     </AppContainer>
   );
 }
