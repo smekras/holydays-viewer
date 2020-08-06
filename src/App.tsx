@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
@@ -7,7 +7,7 @@ import SideView from "./components/SideView";
 import jsonObject from "./data/2020.json";
 import SearchForm from "./components/SearchForm";
 
-function createDate(id: number | string) {
+export function createDate(id: number | string) {
   let dateString = typeof id === "number" ? id.toString() : id;
 
   dateString =
@@ -99,7 +99,7 @@ function App() {
     <AppContainer>
       {console.count("app")}
       <MainPanel>
-        <SearchForm data={data} results={results} />
+        <SearchForm data={jsonObject} results={results} />
         <CalendarView data={data} />
       </MainPanel>
       <SideView results={results} />
