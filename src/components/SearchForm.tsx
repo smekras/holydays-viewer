@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { DayInterface } from "./DayView";
 import { createDate } from "../App";
 
 const FormField = styled.form`
@@ -11,19 +10,24 @@ const FormField = styled.form`
   padding: 0.5em;
   margin-bottom: 0.5em;
   border-bottom: 1px solid gray;
+  width: fit-content;
 `;
 
 const IconBox = styled.div`
   padding: 0.5em;
 `;
 
-const SearchForm = (props: any) => {
+const SearchForm = (props: { data: any[]; handleSearch: any }) => {
   let searchTerms = [""];
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleChange = (e: any) => setSearchTerm(e.target.value);
+  const handleChange = (e: any) => {
+    e.preventDefault();
+    setSearchTerm(e.target.value);
+  };
 
   const handleSubmit = (e: any) => {
+    e.preventDefault();
     searchTerms = [...searchTerms, ...searchTerm.split(",")];
     setSearchTerm("");
   };
@@ -32,16 +36,14 @@ const SearchForm = (props: any) => {
     const searchResults = props.data.filter(
       (entry: { id: string | number }) => {
         searchTerms.forEach((term) => {
-          console.log(entry.id);
           if (createDate(term).getTime() === createDate(entry.id).getTime()) {
             searchResults.push(entry);
           }
         });
       }
     );
-    props.results = searchResults;
-    console.log("search results:", props.results);
-  }, [props.data, searchTerms]);
+    props.handleSearch(searchResults);
+  }, [searchTerms]);
 
   return (
     <FormField onSubmit={handleSubmit}>

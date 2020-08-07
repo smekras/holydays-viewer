@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CalendarView from "./components/CalendarView";
 import { MonthInterface } from "./components/MonthView";
@@ -93,13 +93,17 @@ const MainPanel = styled.div`
 
 function App() {
   const data = reformatData(jsonObject);
-  let results: DayInterface[] = [];
+  const [results, setResults] = useState([] as DayInterface[]);
+
+  function handleSearch(searchResults: DayInterface[]) {
+    setResults(searchResults);
+  }
 
   return (
     <AppContainer>
       {console.count("app")}
       <MainPanel>
-        <SearchForm data={jsonObject} results={results} />
+        <SearchForm data={jsonObject} handleSearch={handleSearch} />
         <CalendarView data={data} />
       </MainPanel>
       <SideView results={results} />
