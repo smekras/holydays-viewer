@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
+
 import CalendarView from "./components/CalendarView";
-import { MonthInterface } from "./components/MonthView";
 import { DayInterface } from "./components/DayView";
+import { MonthInterface } from "./components/MonthView";
+import SearchForm from "./components/SearchForm";
 import SideView from "./components/SideView";
 import jsonObject from "./data/2020.json";
-import SearchForm from "./components/SearchForm";
+import styled from "@emotion/styled";
 
 export function createDate(id: number | string) {
   let dateString = typeof id === "number" ? id.toString() : id;
@@ -94,16 +95,27 @@ const MainPanel = styled.div`
 function App() {
   const data = reformatData(jsonObject);
   const [results, setResults] = useState([] as DayInterface[]);
+  const [searchTerms, setSearchTerms] = useState([""]);
 
-  function handleSearch(searchResults: DayInterface[]) {
-    setResults(searchResults);
-  }
+  useEffect(() => {
+    const searchResults = jsonObject.filter((entry) => {
+      searchTerms.forEach((term: string | number) => {
+        if (createDate(term).getTime() === createDate(entry.id).getTime()) {
+          searchResults.push(entry);
+        }
+      });
+    });
+    console.log("results before:", results);
+    setResults((searchResults as unknown) as DayInterface[]);
+    console.log("results after:", results);
+  }, [searchTerms]);
 
   return (
     <AppContainer>
       {console.count("app")}
       <MainPanel>
-        <SearchForm data={jsonObject} handleSearch={handleSearch} />
+        {console.count("panel")}
+        <SearchForm data={jsonObject} handleSearch={setSearchTerms} />
         <CalendarView data={data} />
       </MainPanel>
       <SideView results={results} />

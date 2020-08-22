@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
+import DayView, { DayInterface } from "./DayView";
+import React, { useEffect, useState } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
-import DayView, { DayInterface } from "./DayView";
+import styled from "@emotion/styled";
 
 const SidePanel = styled.div`
   flex: auto;
@@ -31,7 +32,6 @@ const ResultsLabel = styled.label`
 
 function renderResults(results: DayInterface[]) {
   console.count("results");
-  console.log("results:", results);
 
   if (results.length > 0) {
     return results.map((entry: DayInterface) => (
@@ -47,13 +47,14 @@ function renderResults(results: DayInterface[]) {
         link={entry.link}
       />
     ));
+  } else {
+    return (
+      <div>
+        <br />
+        No query or matching entries
+      </div>
+    );
   }
-  return (
-    <div>
-      <br />
-      No query or matching entries
-    </div>
-  );
 }
 
 const SideView = (props: { results: DayInterface[] }) => {
@@ -65,6 +66,7 @@ const SideView = (props: { results: DayInterface[] }) => {
 
   return (
     <SidePanel>
+      {console.count("side")}
       <Banner>
         <IconBox>
           <FontAwesomeIcon icon={faCalendarDay} />

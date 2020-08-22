@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled from "@emotion/styled";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { createDate } from "../App";
+import styled from "@emotion/styled";
 
 const FormField = styled.form`
   display: flex;
@@ -17,7 +17,7 @@ const IconBox = styled.div`
   padding: 0.5em;
 `;
 
-const SearchForm = (props: { data: any[]; handleSearch: any }) => {
+const SearchForm = (data: any, handleSearch: any) => {
   let searchTerms = [""];
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -31,19 +31,6 @@ const SearchForm = (props: { data: any[]; handleSearch: any }) => {
     searchTerms = [...searchTerms, ...searchTerm.split(",")];
     setSearchTerm("");
   };
-
-  useEffect(() => {
-    const searchResults = props.data.filter(
-      (entry: { id: string | number }) => {
-        searchTerms.forEach((term) => {
-          if (createDate(term).getTime() === createDate(entry.id).getTime()) {
-            searchResults.push(entry);
-          }
-        });
-      }
-    );
-    props.handleSearch(searchResults);
-  }, [searchTerms]);
 
   return (
     <FormField onSubmit={handleSubmit}>
