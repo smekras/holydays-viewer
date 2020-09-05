@@ -31,8 +31,6 @@ const ResultsLabel = styled.label`
 `;
 
 function renderResults(results: DayInterface[]) {
-  console.count("results");
-
   if (results.length > 0) {
     return results.map((entry: DayInterface) => (
       <DayView
@@ -66,7 +64,6 @@ const SideView = (props: { results: DayInterface[] }) => {
 
   return (
     <SidePanel>
-      {console.count("side")}
       <Banner>
         <IconBox>
           <FontAwesomeIcon icon={faCalendarDay} />

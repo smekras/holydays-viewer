@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -10,14 +10,19 @@ const FormField = styled.form`
   padding: 0.5em;
   margin-bottom: 0.5em;
   border-bottom: 1px solid gray;
-  width: fit-content;
 `;
 
 const IconBox = styled.div`
   padding: 0.5em;
 `;
 
-const SearchForm = (data: any, handleSearch: any) => {
+const InputBox = styled.input`
+  min-width: 400px;
+  max-width: 600px;
+`;
+// TODO: fix search bar width
+
+const SearchForm = ({ handleSearch }: any) => {
   let searchTerms = [""];
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -28,7 +33,8 @@ const SearchForm = (data: any, handleSearch: any) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    searchTerms = [...searchTerms, ...searchTerm.split(",")];
+    searchTerms = [...searchTerm.split(",")];
+    handleSearch(searchTerms);
     setSearchTerm("");
   };
 
@@ -37,7 +43,7 @@ const SearchForm = (data: any, handleSearch: any) => {
       <IconBox>
         <FontAwesomeIcon icon={faSearch} />
       </IconBox>
-      <input
+      <InputBox
         type="text"
         placeholder="Search for dates (YYYYMMDD). Separate values by comma."
         value={searchTerm}
