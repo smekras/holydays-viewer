@@ -2,7 +2,7 @@ import DayView, { DayInterface } from "./DayView";
 import React, { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDay, faBackspace } from "@fortawesome/free-solid-svg-icons";
 import styled from "@emotion/styled";
 
 const SidePanel = styled.div`
@@ -19,6 +19,12 @@ const Banner = styled.div`
   flex-flow: row;
   padding: 0.5em;
   border-bottom: 1px solid gray;
+  justify-content: space-between;
+`;
+
+const ResultsTitle = styled.div`
+  display: flex;
+  flex-flow: row;
 `;
 
 const IconBox = styled.div`
@@ -29,6 +35,18 @@ const ResultsLabel = styled.label`
   display: flex;
   padding: 0.5em;
 `;
+
+const ClearBox = styled.button`
+  border: 0;
+  background: white;
+`;
+
+const noResults = (
+  <div>
+    <br />
+    No query or matching entries
+  </div>
+);
 
 function renderResults(results: DayInterface[]) {
   if (results.length > 0) {
@@ -46,12 +64,7 @@ function renderResults(results: DayInterface[]) {
       />
     ));
   } else {
-    return (
-      <div>
-        <br />
-        No query or matching entries
-      </div>
-    );
+    return noResults;
   }
 }
 
@@ -65,10 +78,15 @@ const SideView = (props: { results: DayInterface[] }) => {
   return (
     <SidePanel>
       <Banner>
-        <IconBox>
-          <FontAwesomeIcon icon={faCalendarDay} />
-        </IconBox>
-        <ResultsLabel>Search Results</ResultsLabel>
+        <ResultsTitle>
+          <IconBox>
+            <FontAwesomeIcon icon={faCalendarDay} />
+          </IconBox>
+          <ResultsLabel>Search Results</ResultsLabel>
+        </ResultsTitle>
+        <ClearBox value="clear" onClick={(e) => setOutput(noResults)}>
+          <FontAwesomeIcon icon={faBackspace} />
+        </ClearBox>
       </Banner>
       {output}
     </SidePanel>

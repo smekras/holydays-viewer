@@ -42,6 +42,7 @@ function findMonthDays(month: number) {
         link: entry.link,
       });
     }
+    return null;
   });
   return monthContent;
 }
@@ -66,6 +67,7 @@ function reformatData(source: any[]) {
       monthEntry.days = findMonthDays(monthEntry.month);
       calendarContent.push(monthEntry);
     }
+    return null;
   });
   return calendarContent;
 }
@@ -81,6 +83,7 @@ const AppContainer = styled.div`
 
 const MainPanel = styled.div`
   min-width: min-content;
+  max-width: 1200px;
   ${() => {
     const breakpoints = [768, 1024];
     const rules: string[] = [];
@@ -118,6 +121,7 @@ function App() {
         }
       });
       setResults(searchResults);
+      return null;
     });
   }, [searchTerms]);
 

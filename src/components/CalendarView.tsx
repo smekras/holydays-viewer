@@ -1,6 +1,5 @@
 import MonthView, { MonthInterface } from "./MonthView";
 
-import { DayInterface } from "./DayView";
 import React from "react";
 import styled from "@emotion/styled";
 

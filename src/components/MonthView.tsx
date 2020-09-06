@@ -46,10 +46,13 @@ const MonthView = (props: MonthInterface) => {
     flex-flow: row nowrap;
   `;
 
-  const NumberPlate = styled.div`
+  const NumberPlate = styled.button`
     color: ${official > 0 ? "royalblue" : "brown"};
     padding: 0.5em;
-    min-width: 18px;
+    border: 0;
+    background: white;
+    width: 30px;
+    height: 26px;
     font-weight: bolder;
   `;
 
@@ -117,9 +120,13 @@ const MonthView = (props: MonthInterface) => {
           results.push(entry);
         }
       }
+      if (e.target.value === "month") {
+        results.push(entry);
+      }
       if (entry.id.getDate() === Number(e.target.value)) {
         results.push(entry);
       }
+      return null;
     });
     props.handleResults(results);
   }
@@ -128,7 +135,9 @@ const MonthView = (props: MonthInterface) => {
     <Container>
       <Banner>
         <TitleBox>
-          <NumberPlate>{props.month}</NumberPlate>
+          <NumberPlate value="month" onClick={handleSelection}>
+            {props.month}
+          </NumberPlate>
           <MonthLabel>
             <a href={props.link}>{props.name}</a>
           </MonthLabel>
