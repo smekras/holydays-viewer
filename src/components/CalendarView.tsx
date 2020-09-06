@@ -1,9 +1,12 @@
+import MonthView, { MonthInterface } from "./MonthView";
+
+import { DayInterface } from "./DayView";
 import React from "react";
 import styled from "@emotion/styled";
-import MonthView, { MonthInterface } from "./MonthView";
 
 export interface CalendarInterface {
   data: MonthInterface[];
+  handleResults: any;
 }
 
 const CalendarView = (props: CalendarInterface) => {
@@ -22,6 +25,7 @@ const CalendarView = (props: CalendarInterface) => {
             name={entry.name}
             link={entry.link}
             days={entry.days}
+            handleResults={props.handleResults}
           />
         );
       })}

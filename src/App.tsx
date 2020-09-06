@@ -56,6 +56,7 @@ function reformatData(source: any[]) {
       name: "",
       link: "",
       days: [],
+      handleResults: undefined,
     };
 
     if (dateString.substring(6) === "00") {
@@ -124,7 +125,10 @@ function App() {
     <AppContainer>
       <MainPanel>
         <SearchForm handleSearch={(terms: string[]) => setSearchTerms(terms)} />
-        <CalendarView data={data} />
+        <CalendarView
+          data={data}
+          handleResults={(results: DayInterface[]) => setResults(results)}
+        />
       </MainPanel>
       <SideView results={results} />
     </AppContainer>

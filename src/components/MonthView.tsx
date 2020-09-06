@@ -1,12 +1,13 @@
+import { DayInterface } from "./DayView";
 import React from "react";
 import styled from "@emotion/styled";
-import { DayInterface } from "./DayView";
 
 export interface MonthInterface {
   month: number;
   name: string;
   link: string;
   days: DayInterface[];
+  handleResults: any;
 }
 
 function countOccurence(days: DayInterface[], trait: string) {
@@ -87,10 +88,12 @@ const MonthView = (props: MonthInterface) => {
     }
   `;
 
-  const DayBox = styled.div<BoxProps>`
+  const DayBox = styled.button<BoxProps>`
     padding: 0.5em;
+    border: 0;
+    background: white;
     text-align: center;
-    width: 15px;
+    width: 30px;
     color: ${(bprops: BoxProps) =>
       bprops.purpose === "off"
         ? "royalblue"
@@ -98,6 +101,28 @@ const MonthView = (props: MonthInterface) => {
         ? "brown"
         : "black"};
   `;
+
+  function handleSelection(e: any) {
+    e.preventDefault();
+    let results: any[] = [];
+
+    props.days.map((entry) => {
+      if (e.target.value === "off") {
+        if (entry.off) {
+          results.push(entry);
+        }
+      }
+      if (e.target.value === "sec") {
+        if (entry.sec) {
+          results.push(entry);
+        }
+      }
+      if (entry.id.getDate() === Number(e.target.value)) {
+        results.push(entry);
+      }
+    });
+    props.handleResults(results);
+  }
 
   return (
     <Container>
@@ -110,14 +135,14 @@ const MonthView = (props: MonthInterface) => {
         </TitleBox>
         <TitleBox>
           {official > 0 ? (
-            <Box purpose="off" onClick={(e) => console.log("Clicked")}>
+            <Box purpose="off" value="off" onClick={handleSelection}>
               {official}
             </Box>
           ) : (
             ""
           )}
           {secular > 0 ? (
-            <Box purpose="sec" onClick={(e) => console.log("Clicked")}>
+            <Box purpose="sec" value="sec" onClick={handleSelection}>
               {secular}
             </Box>
           ) : (
@@ -130,7 +155,9 @@ const MonthView = (props: MonthInterface) => {
           return (
             <DayBox
               key={entry.id.getDate()}
-              purpose={entry.off ? "off" : entry.sec ? "sec" : ""}
+              purpose={entry.off ? "off" : entry.sec ? "sec" : "day"}
+              value={entry.id.getDate()}
+              onClick={handleSelection}
             >
               {entry.id.getDate()}
             </DayBox>
